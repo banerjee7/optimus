@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Developer API — Kiln</title>
+<meta name="description" content="Kiln public API, scoped API keys, signed webhooks, SCIM provisioning and integration guidance."/>
+<link rel="canonical" href="https://kiln-kohl.vercel.app/developers"/>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"/>
+<link rel="stylesheet" href="/legal/legal.css"/>
+<style>
+  .dev-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:18px 0}
+  .dev-card{border:1px solid var(--line);border-radius:12px;padding:16px;background:rgba(255,255,255,.28)}
+  .dev-card b{display:block;margin-bottom:5px}
+  .dev-card span{color:var(--muted);font-size:14px}
+  pre{background:#17130f;color:#f1e8dc;border-radius:10px;padding:14px 16px;overflow:auto;font-size:13px;line-height:1.55}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .method{display:inline-block;min-width:46px;font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--ember)}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+  th,td{text-align:left;vertical-align:top;padding:8px;border-bottom:1px solid var(--line)}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  .note{border-left:3px solid var(--ember);padding:2px 0 2px 16px;color:var(--muted)}
+  footer{border-top:1px solid var(--line);margin-top:48px;padding:22px 0;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<header><div class="nav"><a class="brand" href="/">Kiln.</a><nav class="nav-links"><a href="/">Home</a><a href="/trust">Trust</a><a href="/legal/dpa.html">DPA</a><a href="/app">Console</a></nav></div></header>
+<main class="wrap">
+<div class="eyebrow">Developer platform</div>
+<h1>Build on the gates.</h1>
+<p class="lede">The Kiln public API exposes workspace projects, generated artifacts and workstream runs. Every key is scoped, every webhook is signed, and every production action still requires a human approval in the console.</p>
+<p class="meta">API version v1 · Base URL <code>https://kiln-kohl.vercel.app</code> · Status <a href="/api/status">/api/status</a></p>
+
+<h2>Create an API key</h2>
+<p>Sign in, open <b>Developer</b>, and create a key. The raw key is shown once. Keys require a paid workspace and support these scopes:</p>
+<div class="dev-grid">
+  <div class="dev-card"><b>projects:read</b><span>List projects, read a project workspace and list artifacts.</span></div>
+  <div class="dev-card"><b>runs:write</b><span>Run a single workstream and create a new artifact revision.</span></div>
+  <div class="dev-card"><b>projects:write</b><span>Reserved for project mutation endpoints.</span></div>
+  <div class="dev-card"><b>webhooks:read</b><span>Reserved for webhook metadata endpoints.</span></div>
+</div>
+<pre><code>curl https://kiln-kohl.vercel.app/api/v1/projects \
+  -H "Authorization: Bearer kiln_live_..."</code></pre>
+
+<h2>Endpoints</h2>
+<table>
+  <tr><th>Method</th><th>Path</th><th>Scope</th><th>Purpose</th></tr>
+  <tr><td class="method">GET</td><td><code>/api/v1/catalog</code></td><td>any key</td><td>Workstream, model and tier identifiers.</td></tr>
+  <tr><td class="method">GET</td><td><code>/api/v1/projects</code></td><td>projects:read</td><td>List accessible workspace projects.</td></tr>
+  <tr><td class="method">GET</td><td><code>/api/v1/projects/:id</code></td><td>projects:read</td><td>Project workspace, artifacts, messages and deployments.</td></tr>
+  <tr><td class="method">GET</td><td><code>/api/v1/projects/:id/artifacts</code></td><td>projects:read</td><td>Artifact revisions for a project.</td></tr>
+  <tr><td class="method">POST</td><td><code>/api/v1/projects/:id/run</code></td><td>runs:write</td><td>Run one workstream. Body: <code>{"functionKey":"architecture","instruction":"..."}</code>.</td></tr>
+</table>
+<pre><code>curl -X POST https://kiln-kohl.vercel.app/api/v1/projects/prj_.../run \
+  -H "Authorization: Bearer kiln_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{"functionKey":"architecture","instruction":"Add a queue between intake and generation."}'</code></pre>
+
+<h2>Response shape</h2>
+<pre><code>{
+  "ok": true,
+  "data": { "id": "art_...", "functionKey": "architecture", "revision": 2 },
+  "meta": { "version": "v1", "usage": { "used": 18200, "quota": 1200000 } }
+}</code></pre>
+<p class="note">Errors use <code>{ "ok": false, "error": "message", "code": "OPTIONAL_CODE" }</code> with conventional HTTP status codes. Quota, plan and role failures return 402 or 403 with an actionable code.</p>
+
+<h2>Signed webhooks</h2>
+<p>Create a webhook in <b>Developer</b>. Kiln sends JSON with an <code>x-kiln-event</code> header and an HMAC-SHA256 signature in <code>x-kiln-signature-256</code>. Verify the raw request body before parsing it.</p>
+<pre><code>const crypto = require('crypto');
+
+function verify(rawBody, header, secret) {
+  const expected = 'sha256=' + crypto
+    .createHmac('sha256', secret)
+    .update(rawBody)
+    .digest('hex');
+  return crypto.timingSafeEqual(
+    Buffer.from(expected),
+    Buffer.from(header || '')
+  );
+}</code></pre>
+<p>Events include <code>project.created</code>, <code>artifact.generated</code>, <code>deployment.created</code>, <code>deployment.approved</code>, <code>billing.plan.activated</code>, <code>comment.created</code>, <code>member.invited</code> and <code>backup.created</code>. Failed deliveries retry with exponential backoff through the durable job queue.</p>
+<p>Webhook URLs must be HTTPS and cannot target private, loopback, link-local or internal hosts. Delivery records are retained for troubleshooting.</p>
+
+<h2>SCIM provisioning</h2>
+<p>Owners and admins on a paid workspace can issue a SCIM bearer token from <b>Security</b>. The endpoint is compatible with SCIM 2.0 Users, Groups and ServiceProviderConfig:</p>
+<pre><code>GET  /api/scim/v2/Users?filter=userName eq "person@example.com"
+POST /api/scim/v2/Users
+PATCH /api/scim/v2/Users/:id
+DELETE /api/scim/v2/Users/:id
+GET  /api/scim/v2/Groups
+GET  /api/scim/v2/ServiceProviderConfig</code></pre>
+<p>Groups map to workspace roles: <code>admin</code>, <code>member</code> and <code>viewer</code>. The workspace owner cannot be modified through SCIM. Send <code>Authorization: Bearer kiln_scim_...</code> and <code>Content-Type: application/scim+json</code>.</p>
+
+<h2>Operational notes</h2>
+<ul>
+  <li>Keys are hashed at rest and can be revoked immediately.</li>
+  <li>Requests are rate-limited. A 429 response is safe to retry with backoff.</li>
+  <li>Public API runs consume workspace tokens and obey the same plan and role checks as the console.</li>
+  <li>Scheduled jobs run through <code>POST /api/internal/jobs/run</code> with the deployment’s cron secret.</li>
+  <li>Security reports: <a href="mailto:security@kiln.studio">security@kiln.studio</a>. Commercial/API support: <a href="mailto:bidyut.banerjee@gmail.com">bidyut.banerjee@gmail.com</a>.</li>
+</ul>
+
+<footer>© 2026 Kiln · Bidyut Banerjee. All rights reserved. · <a href="/trust">Trust Center</a> · <a href="/legal/terms.html">Terms</a> · <a href="/legal/privacy.html">Privacy</a></footer>
+</main>
+</body>
+</html>

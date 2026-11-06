@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /app
+Disallow: /mobile
+Disallow: /api/
+Disallow: /sandbox/
+Disallow: /docs/
+Disallow: /blueprint
+
+Sitemap: https://kiln-kohl.vercel.app/sitemap.xml

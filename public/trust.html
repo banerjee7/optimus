@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Trust Center — Kiln</title>
+<meta name="description" content="Kiln security posture, controls, subprocessors, data handling, backups, vulnerability disclosure and honest certification status."/>
+<link rel="canonical" href="https://kiln-kohl.vercel.app/trust"/>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"/>
+<link rel="stylesheet" href="/legal/legal.css"/>
+<style>
+  .trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:22px 0}
+  .trust-card{border:1px solid var(--line);border-radius:12px;padding:16px;background:rgba(255,255,255,.28)}
+  .trust-card b{display:block;margin-bottom:5px}
+  .trust-card span{color:var(--muted);font-size:14px}
+  .status{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:3px 9px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+  .status.ok{color:#1f6b42;border-color:#b5d8c3;background:#eef8f1}
+  .status.wip{color:#8a5a12;border-color:#e4ca9b;background:#fdf5e6}
+  .status.no{color:#8a2f2f;border-color:#e4b3b3;background:#fbecec}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+  th,td{text-align:left;vertical-align:top;padding:9px 8px;border-bottom:1px solid var(--line)}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  .callout{border-left:3px solid var(--ember);padding:2px 0 2px 16px;margin:20px 0;color:var(--muted)}
+  footer{border-top:1px solid var(--line);margin-top:48px;padding:22px 0;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<header><div class="nav"><a class="brand" href="/">Kiln.</a><nav class="nav-links"><a href="/">Home</a><a href="/developers">Developers</a><a href="/legal/privacy.html">Privacy</a><a href="/legal/dpa.html">DPA</a><a href="/app">Console</a></nav></div></header>
+<main class="wrap">
+<div class="eyebrow">Trust · security</div>
+<h1>Security you can inspect.</h1>
+<p class="lede">Kiln is a human-gated AI delivery workspace. This page states what is implemented, what is independently assessed, and what is not. It intentionally avoids certification claims we cannot support.</p>
+<p class="meta">Last reviewed 24 October 2026 · Security contact <a href="mailto:security@kiln.studio">security@kiln.studio</a> · Machine-readable posture: <a href="/api/trust">/api/trust</a></p>
+
+<h2>Controls in the product</h2>
+<div class="trust-grid">
+  <div class="trust-card"><span class="status ok">Implemented</span><b>Least-privilege access</b><span>Server-owned sessions, workspace RBAC (owner/admin/member/viewer), scoped API keys and SCIM provisioning.</span></div>
+  <div class="trust-card"><span class="status ok">Implemented</span><b>MFA and enterprise SSO</b><span>TOTP MFA with recovery codes and OIDC single sign-on with PKCE, nonce and signed-token validation.</span></div>
+  <div class="trust-card"><span class="status ok">Implemented</span><b>Tenant isolation</b><span>Projects, artifacts, comments, exports and sandbox previews are authorized against workspace membership.</span></div>
+  <div class="trust-card"><span class="status ok">Implemented</span><b>Audit evidence</b><span>Workspace, billing and Revenue Swarm evidence records include named human approvals.</span></div>
+  <div class="trust-card"><span class="status ok">Implemented</span><b>Backups and recovery</b><span>Private Blob snapshots with SHA-256 checksums, 20-snapshot retention and a tested restore runbook.</span></div>
+  <div class="trust-card"><span class="status ok">Implemented</span><b>Signed webhooks</b><span>Outbound events use HMAC-SHA256 signatures with retries and delivery records.</span></div>
+  <div class="trust-card"><span class="status wip">In progress</span><b>SOC 2 Type II</b><span>Readiness controls are documented. An independent SOC 2 report is not yet available.</span></div>
+  <div class="trust-card"><span class="status no">Not certified</span><b>ISO 27001</b><span>Kiln does not hold an ISO 27001 certificate. No certificate is claimed.</span></div>
+</div>
+
+<h2>Data handling</h2>
+<table>
+  <tr><th>Topic</th><th>Position</th></tr>
+  <tr><td>Primary storage</td><td>Workspace JSON in private Vercel Blob storage; local JSON is used only for development or when Blob is not configured.</td></tr>
+  <tr><td>Data residency</td><td>United States by default. Enterprise VPC and residency options are quoted per engagement.</td></tr>
+  <tr><td>Retention</td><td>Workspace data is retained until deletion. Backup snapshots rotate over the latest 20.</td></tr>
+  <tr><td>Model training</td><td>Client content is not used to train foundation models. Generated artifacts remain workspace data.</td></tr>
+  <tr><td>Human gates</td><td>Production deployment, Revenue Swarm outreach and proposal approval require a named human decision.</td></tr>
+</table>
+
+<h2>Subprocessors</h2>
+<table>
+  <tr><th>Provider</th><th>Purpose</th><th>Location</th><th>Status</th></tr>
+  <tr><td>Vercel</td><td>Application hosting, functions and private Blob storage</td><td>United States</td><td>Active</td></tr>
+  <tr><td>Stripe</td><td>Payments and subscription billing</td><td>United States</td><td>Configured only when live credentials are present</td></tr>
+  <tr><td>Resend</td><td>Transactional email</td><td>United States</td><td>Configured only when live credentials are present</td></tr>
+</table>
+<p class="callout">Billing, email and CRM currently run in explicitly labelled test mode on this deployment until real provider credentials are configured. Test mode does not charge cards or send external email.</p>
+
+<h2>Status and resilience</h2>
+<p>Live component status is available at <a href="/api/status">/api/status</a>. The monthly uptime target for paid workspaces is 99.9%. Backups are created by an administrator or scheduled job and can be restored from the Operations view. Restore validates the snapshot checksum and takes a pre-restore safety snapshot first.</p>
+
+<h2>Vulnerability disclosure</h2>
+<p>Email <a href="mailto:security@kiln.studio">security@kiln.studio</a> with reproduction steps and impact. We acknowledge reports within two business days. Please do not access other customers’ data, run destructive tests, or disclose an unresolved issue publicly before we have had a reasonable opportunity to fix it. A machine-readable policy is at <a href="/.well-known/security.txt">/.well-known/security.txt</a>.</p>
+
+<h2>Questions and contracts</h2>
+<p>For security questionnaires, architecture reviews, DPAs or enterprise procurement, contact <a href="mailto:bidyut.banerjee@gmail.com">bidyut.banerjee@gmail.com</a> or <a href="tel:+918297140808">+91-8297140808</a>. The current DPA is at <a href="/legal/dpa.html">/legal/dpa.html</a>.</p>
+
+<footer>© 2026 Kiln · Bidyut Banerjee. All rights reserved. · <a href="/legal/privacy.html">Privacy</a> · <a href="/legal/terms.html">Terms</a> · <a href="/developers">Developers</a></footer>
+</main>
+</body>
+</html>

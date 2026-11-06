@@ -1,0 +1,31 @@
+:root{--ink:#1e1a17;--paper:#f7f2ea;--paper-2:#efe6d9;--ember:#d3552d;--muted:#6d635b;--line:#ded3c4}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--ember);text-decoration-thickness:1px;text-underline-offset:3px}
+.wrap{max-width:860px;margin:0 auto;padding:0 24px}
+header{border-bottom:1px solid var(--line);background:rgba(247,242,234,.94);position:sticky;top:0;backdrop-filter:blur(10px);z-index:2}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:24px;max-width:1100px;margin:0 auto;padding:18px 24px}
+.brand{display:flex;align-items:center;gap:9px;color:var(--ink);font-weight:750;letter-spacing:-.03em;font-size:20px;text-decoration:none}
+.brand svg{width:26px;height:26px}
+.nav-links{display:flex;gap:18px;flex-wrap:wrap;font-size:13px}
+.nav-links a{color:var(--muted);text-decoration:none}
+.nav-links a:hover{color:var(--ink)}
+main{padding:56px 0 72px}
+.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:750;color:var(--ember)}
+h1{font-size:clamp(34px,6vw,54px);line-height:1.04;letter-spacing:-.045em;margin:12px 0 16px}
+h2{font-size:24px;letter-spacing:-.02em;margin:36px 0 10px}
+h3{font-size:17px;margin:24px 0 8px}
+p,li{color:#3d342e}
+.lede{font-size:18px;color:var(--muted);max-width:720px}
+.meta{font-size:13px;color:var(--muted);margin-bottom:28px}
+.card{background:#fffaf3;border:1px solid var(--line);border-radius:16px;padding:24px 26px;margin:20px 0}
+.card h2{margin-top:0}
+ul{padding-left:22px}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:16px 0}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.note{border-left:3px solid var(--ember);padding:12px 16px;background:var(--paper-2);border-radius:0 10px 10px 0;font-size:14px}
+footer{border-top:1px solid var(--line);padding:28px 0 40px;font-size:13px;color:var(--muted)}
+footer a{color:var(--muted);margin-right:14px}
+@media(max-width:680px){.nav-links{display:none}main{padding-top:36px}.card{padding:18px}}

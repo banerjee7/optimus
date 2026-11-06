@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Data Processing Addendum — Kiln</title>
+<meta name="description" content="Kiln's data processing terms, security measures, subprocessors and international transfer safeguards."/>
+<link rel="canonical" href="https://kiln-kohl.vercel.app/legal/dpa.html"/>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"/>
+<link rel="stylesheet" href="/legal/legal.css"/>
+</head>
+<body>
+<header><div class="nav"><a class="brand" href="/">Kiln.</a><nav class="nav-links"><a href="/">Home</a><a href="/legal/privacy.html">Privacy</a><a href="/legal/terms.html">Terms</a><a href="/app">Console</a></nav></div></header>
+<main class="wrap">
+<div class="eyebrow">Trust · legal</div>
+<h1>Data Processing Addendum</h1>
+<p class="lede">This DPA forms part of the agreement between the customer (controller) and Bidyut Banerjee / Kiln (processor) for personal data processed through the Kiln service.</p>
+<p class="meta">Effective 24 October 2026 · Processor: Bidyut Banerjee, India · Contact: <a href="mailto:bidyut.banerjee@gmail.com">bidyut.banerjee@gmail.com</a></p>
+
+<div class="card">
+<h2>1. Roles and scope</h2>
+<p>The customer determines the purposes and means of processing. Kiln processes personal data only to provide the service, secure it, and follow documented instructions. This DPA covers account data, workspace content, lead data, billing records, support communications and usage metadata submitted to the service.</p>
+<p>Where Kiln acts as an independent controller for its own marketing, account administration, fraud prevention or legal compliance, it does so under the <a href="/legal/privacy.html">Privacy Policy</a>.</p>
+</div>
+
+<h2>2. Processing details</h2>
+<table>
+<tr><th>Subject</th><th>Detail</th></tr>
+<tr><td>Duration</td><td>Term of the agreement plus the deletion period in section 7</td></tr>
+<tr><td>Nature and purpose</td><td>Hosting, workspace generation, storage, collaboration, approval evidence, billing, support, security and analytics</td></tr>
+<tr><td>Data categories</td><td>Identification and contact data, account credentials (hashed), workspace content, billing and usage records, support messages, lead enquiries</td></tr>
+<tr><td>Data subjects</td><td>Customer personnel, leads, end users whose data is included in workspace content, and website visitors</td></tr>
+<tr><td>Special categories</td><td>Not intended. Customer must not submit them without a separate written agreement and additional safeguards.</td></tr>
+</table>
+
+<h2>3. Processor obligations</h2>
+<ul>
+<li>Process only on documented instructions, including international transfers, unless required by law.</li>
+<li>Ensure personnel are bound by confidentiality and receive appropriate training.</li>
+<li>Implement the technical and organisational measures in section 5.</li>
+<li>Assist with data-subject requests, impact assessments and consultations, taking into account the nature of processing.</li>
+<li>Notify the customer without undue delay after becoming aware of a personal-data breach.</li>
+<li>Make available information reasonably necessary to demonstrate compliance and allow audits with reasonable notice, scope and confidentiality.</li>
+<li>Delete or return data at the end of the agreement, subject to legal retention.</li>
+</ul>
+
+<h2>4. Subprocessors</h2>
+<p>The customer grants general authorisation for the subprocessors below. Kiln will give notice of new subprocessors and an opportunity to object on reasonable grounds.</p>
+<table>
+<tr><th>Subprocessor</th><th>Purpose</th><th>Location</th></tr>
+<tr><td>Vercel Inc.</td><td>Application hosting and edge delivery</td><td>United States / global edge</td></tr>
+<tr><td>Stripe, Inc.</td><td>Checkout, subscriptions, invoices and billing portal when configured</td><td>United States / Ireland</td></tr>
+<tr><td>Resend or customer-configured email webhook</td><td>Transactional and lifecycle email when configured</td><td>United States / configured region</td></tr>
+<tr><td>Customer-configured CRM webhook</td><td>Lead routing and CRM synchronisation when configured</td><td>Customer-selected</td></tr>
+<tr><td>Open-source model providers / self-hosted models</td><td>Generation when a live model gateway is configured</td><td>Configured by customer</td></tr>
+</table>
+<p>The demonstration deployment uses simulated email, CRM and payment modes when credentials are absent. Those modes do not transmit data to the corresponding third party.</p>
+
+<h2>5. Security measures</h2>
+<ul>
+<li>Encryption in transit via HTTPS/HSTS; provider-managed encryption at rest where available.</li>
+<li>Scrypt password hashing, HttpOnly SameSite sessions, session expiry and invalidation on password reset.</li>
+<li>Rate limits and lockout on login, registration, generation, lead capture and sensitive actions.</li>
+<li>Input sanitisation, output escaping, CSP, frame and MIME protections, and authentication on the build blueprint.</li>
+<li>Least-privilege access, audit/evidence events, approval gates and separation of simulated from live integrations.</li>
+<li>Vulnerability management and incident response appropriate to a small team, with annual review of these measures.</li>
+</ul>
+
+<h2>6. International transfers</h2>
+<p>Where personal data originating in the EEA, UK or Switzerland is transferred to a country without an adequacy decision, the parties rely on the European Commission's Standard Contractual Clauses (and the UK Addendum where applicable), incorporated by reference. The customer may request a signed copy. Additional safeguards include minimisation, access controls and encryption.</p>
+
+<h2>7. Return and deletion</h2>
+<p>On termination, the customer may export artifacts and delivery packs during the notice period. Kiln will delete or return personal data within 30 days unless law requires retention. Backup copies rotate within 30 days. The deployed demo may reset earlier because serverless storage is ephemeral; customers must export anything they need to retain.</p>
+
+<h2>8. Breach notification</h2>
+<p>Kiln will notify the customer without undue delay after confirming a breach affecting customer personal data, describing the nature of the incident, likely consequences, measures taken and a contact point. The parties will cooperate on notifications to regulators and data subjects where required.</p>
+
+<h2>9. Audit and compliance</h2>
+<p>On request, Kiln will provide a security summary and the information needed for a compliance review. On-site audits require 30 days' notice, a mutually agreed scope, confidentiality and cost reimbursement. Nothing in this DPA requires disclosure of other customers' data.</p>
+
+<h2>10. Liability and order of precedence</h2>
+<p>Liability is subject to the limitations in the Terms. If this DPA conflicts with the Terms on data protection, this DPA prevails. If Standard Contractual Clauses apply, they prevail over conflicting terms.</p>
+
+<div class="note">To execute this DPA, request a signed copy, or ask about a subprocessor: <a href="mailto:bidyut.banerjee@gmail.com">bidyut.banerjee@gmail.com</a> · <a href="tel:+918297140808">+91-8297140808</a>.</div>
+</main>
+<footer class="wrap"><a href="/">Kiln</a><a href="/legal/privacy.html">Privacy</a><a href="/legal/terms.html">Terms</a><a href="/app">Console</a><span>© 2026 Kiln · Bidyut Banerjee</span></footer>
+</body>
+</html>

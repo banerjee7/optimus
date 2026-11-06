@@ -1,0 +1,10 @@
+Contact: mailto:security@kiln.studio
+Contact: mailto:bidyut.banerjee@gmail.com
+Expires: 2027-10-24T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://kiln-kohl.vercel.app/.well-known/security.txt
+Policy: https://kiln-kohl.vercel.app/trust
+Acknowledgments: https://kiln-kohl.vercel.app/trust
+# Kiln — human-gated AI delivery workspace.
+# Please report vulnerabilities privately. Do not access other customers' data
+# or run destructive tests. We acknowledge reports within two business days.
